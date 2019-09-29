@@ -2,34 +2,12 @@ version: "2"
 
 services:
         web:
-                build: .
-                depends_on:
-                        - mongodb
-                        - backend
-                        - frontend
-        mongodb:
-                container_name: mongodb
-                image: "mongo"
-                ports:
-                        - '27017:27017'
-
-        backend:
-                container_name: backend
-                build: ./backend/
-                volumes:
-                        - ./backend:/usr/src/app
-                        - /usr/src/app/node_modules
-                ports:
-                        - "5000:5000"
-                depends_on:
-                        - mongodb
-        frontend:
-                container_name: frontend
-                build: ./frontend/
-                volumes:
-                        - ./frontend:/usr/src/app
-                        - /usr/src/app/node_modules
-                ports:
-                        - "3000:3000"
-                depends_on:
-                        - backend
+                extends:
+                        file: services.yml
+                        service: mongodb
+                extends:
+                        file: services.yml
+                        service: backend
+                extends:
+                        file: services.yml
+                        service: frontend
